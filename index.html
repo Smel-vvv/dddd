@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Улучшенный Дневник Настроения</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body class="light-theme">
+    <div class="background-animation"></div>
+    
+    <div class="container">
+        <header>
+            <div class="header-top">
+                <h1><i class="fas fa-book-open"></i> Улучшенный Дневник</h1>
+                <div class="header-actions">
+                    <button id="themeToggle"><i class="fas fa-moon"></i></button>
+                    <button id="exportBtn"><i class="fas fa-file-export"></i></button>
+                    <button id="importBtn"><i class="fas fa-file-import"></i></button>
+                </div>
+            </div>
+            <div class="date-display" id="currentDate"></div>
+            <div class="achievement-badge" id="achievementBadge"></div>
+        </header>
+
+        <div class="stats-section">
+            <div class="stats-card">
+                <h3>Средний балл: <span id="avgRating">0</span></h3>
+            </div>
+            <div class="stats-card">
+                <h3>Всего записей: <span id="totalEntries">0</span></h3>
+            </div>
+            <div class="stats-card">
+                <h3>Серия дней: <span id="streakDays">0</span></h3>
+            </div>
+        </div>
+
+        <div class="mood-rating">
+            <h2>Как прошёл день?</h2>
+            <div class="emoji-rating">
+                <div class="emoji-option" data-rating="1">😢</div>
+                <div class="emoji-option" data-rating="2">😞</div>
+                <div class="emoji-option" data-rating="3">😐</div>
+                <div class="emoji-option" data-rating="4">😊</div>
+                <div class="emoji-option" data-rating="5">😁</div>
+            </div>
+            <div class="tags-container">
+                <h3>Теги:</h3>
+                <div class="tags-list">
+                    <label class="tag-checkbox">
+                        <input type="checkbox" value="работа"> Работа
+                    </label>
+                    <label class="tag-checkbox">
+                        <input type="checkbox" value="семья"> Семья
+                    </label>
+                    <label class="tag-checkbox">
+                        <input type="checkbox" value="здоровье"> Здоровье
+                    </label>
+                    <label class="tag-checkbox">
+                        <input type="checkbox" value="отдых"> Отдых
+                    </label>
+                    <label class="tag-checkbox">
+                        <input type="checkbox" value="друзья"> Друзья
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="journal-entry">
+            <div class="editor-toolbar">
+                <button class="format-btn" data-command="bold"><i class="fas fa-bold"></i></button>
+                <button class="format-btn" data-command="italic"><i class="fas fa-italic"></i></button>
+                <button class="format-btn" data-command="insertUnorderedList"><i class="fas fa-list-ul"></i></button>
+                <button class="format-btn" data-command="insertOrderedList"><i class="fas fa-list-ol"></i></button>
+            </div>
+            <div id="entryEditor" contenteditable="true" placeholder="Опишите, как прошёл ваш день..."></div>
+            
+            <div class="complaints-section">
+                <h3>Жалобы и проблемы</h3>
+                <div id="complaintsEditor" contenteditable="true" placeholder="Опишите свои жалобы или проблемы..."></div>
+            </div>
+            
+            <div class="entry-actions">
+                <button id="saveEntry"><i class="fas fa-save"></i> Сохранить</button>
+                <button id="addPhotoBtn"><i class="fas fa-camera"></i> Добавить фото</button>
+                <input type="file" id="photoInput" accept="image/*" style="display: none;">
+            </div>
+        </div>
+
+        <div class="search-filter">
+            <input type="text" id="searchInput" placeholder="Поиск по записям...">
+            <select id="filterRating">
+                <option value="0">Все оценки</option>
+                <option value="1">1 ★</option>
+                <option value="2">2 ★★</option>
+                <option value="3">3 ★★★</option>
+                <option value="4">4 ★★★★</option>
+                <option value="5">5 ★★★★★</option>
+            </select>
+            <select id="filterTag">
+                <option value="">Все теги</option>
+                <option value="работа">Работа</option>
+                <option value="семья">Семья</option>
+                <option value="здоровье">Здоровье</option>
+                <option value="отдых">Отдых</option>
+                <option value="друзья">Друзья</option>
+            </select>
+            <input type="date" id="filterDate">
+        </div>
+
+        <div class="previous-entries">
+            <h2>Предыдущие записи</h2>
+            <div class="entries-list" id="entriesList"></div>
+        </div>
+
+        <div class="charts-section">
+            <div class="chart-container">
+                <canvas id="moodChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="tagsChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальные окна -->
+    <div class="modal" id="entryModal">
+        <!-- Содержимое модального окна -->
+    </div>
+
+    <div class="modal" id="achievementsModal">
+        <!-- Содержимое модального окна достижений -->
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
